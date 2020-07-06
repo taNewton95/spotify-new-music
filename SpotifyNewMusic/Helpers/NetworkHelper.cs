@@ -15,38 +15,43 @@ namespace SpotifyNewMusic
 
         public async static Task<T> SendRequest<T>(BaseRequest requestObj) where T : BaseResponse
         {
-            HttpClient client = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri(requestObj.url);
-
-            foreach (KeyValuePair<string, string> keyValuePair in requestObj.headers)
+            using (HttpClient client = new HttpClient())
             {
-                request.Headers.Add(keyValuePair.Key, keyValuePair.Value);
-            }
+                using (HttpRequestMessage request = new HttpRequestMessage())
+                {
+                    request.RequestUri = new Uri(requestObj.url);
 
-            switch (requestObj)
-            {
-                case GetRequest get:
-                    request.Method = HttpMethod.Get;
-                    break;
+                    foreach (KeyValuePair<string, string> keyValuePair in requestObj.headers)
+                    {
+                        request.Headers.Add(keyValuePair.Key, keyValuePair.Value);
+                    }
 
-                case PostRequest post:
+                    switch (requestObj)
+                    {
+                        case GetRequest get:
+                            request.Method = HttpMethod.Get;
+                            break;
 
-                    var content = new FormUrlEncodedContent(post.values);
-                    content.Headers.Clear();
-                    content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
-                    request.Method = HttpMethod.Post;
-                    request.Content = content;
+                        case PostRequest post:
 
-                    break;
+                            var content = new FormUrlEncodedContent(post.values);
+                            content.Headers.Clear();
+                            content.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+                            request.Method = HttpMethod.Post;
+                            request.Content = content;
 
-            }
+                            break;
 
-            HttpResponseMessage response = await client.SendAsync(request);
+                    }
 
-            var responseStr = await response.Content.ReadAsStringAsync();
+                    using (HttpResponseMessage response = await client.SendAsync(request))
+                    {
+                        var responseStr = await response.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<T>(responseStr);
 
-            return JsonConvert.DeserializeObject<T>(responseStr);
+                    };
+                };
+            };
 
         }
 

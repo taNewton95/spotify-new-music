@@ -27,6 +27,8 @@ namespace SpotifyNewMusic.Entities
         public const string _FileName = "Config.json";
 
         public string client_id, client_secret;
+        public KeyValuePair<string, string>[] artists;
+        public EmailSettings emailSettings;
 
         private static void Load()
         {
@@ -49,7 +51,7 @@ namespace SpotifyNewMusic.Entities
 
         }
 
-        private static void Save()
+        public static void Save()
         {
             string fullFilePath = GetFullFilePath();
             File.WriteAllText(fullFilePath, JsonConvert.SerializeObject(_Current));

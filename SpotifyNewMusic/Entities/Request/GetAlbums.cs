@@ -9,7 +9,7 @@ namespace SpotifyNewMusic.Entities.Request
 
         public readonly string artistId;
 
-        public override string url => $"https://api.spotify.com/v1/artists/{artistId}/albums";
+        public override string url => $"https://api.spotify.com/v1/artists/{artistId}/albums?country=GB";
 
         public GetAlbums(string artistId)
         {

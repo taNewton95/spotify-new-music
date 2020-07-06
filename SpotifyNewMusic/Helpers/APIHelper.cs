@@ -31,15 +31,13 @@ namespace SpotifyNewMusic
             return true;
         }
 
-        public async static Task<bool> GetAlbums(string artistId)
+        public async static Task<GetAlbumsResponse> GetAlbums(string artistId)
         {
             GetAlbums getAlbums = new GetAlbums(artistId);
 
             getAlbums.headers.Add(new KeyValuePair<string, string>("Authorization", $"Bearer {_AccessToken}"));
 
-            await NetworkHelper.SendRequest<AuthoriseResponse>(getAlbums);
-
-            return true;
+            return await NetworkHelper.SendRequest<GetAlbumsResponse>(getAlbums);
 
         }
 

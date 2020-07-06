@@ -1,11 +1,16 @@
 ﻿using SpotifyNewMusic.Entities;
-using SpotifyNewMusic.Entities.Enums;
 using SpotifyNewMusic.Entities.Request;
+using SpotifyNewMusic.Entities.Response;
+using SpotifyNewMusic.Entities.Spotify;
+using SpotifyNewMusic.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace SpotifyNewMusic
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -26,7 +31,34 @@ namespace SpotifyNewMusic
         {
             await APIHelper.Authorise();
 
-            await APIHelper.GetAlbums(ArtistMap.Aitch);
+            var allNewAlbums = new List<NewAlbumInfo>();
+
+            foreach (KeyValuePair<string, string> artist in Config.Current.artists)
+            {
+                GetAlbumsResponse response = await APIHelper.GetAlbums(artist.Value);
+
+                var newAlbums = response.items.Where(album => album.release_date.CompareTo(DateTime.Now.Date.AddDays(-60)) > 0);
+
+                if (newAlbums.Count() == 0)
+                {
+                    continue;
+                }
+
+                NewAlbumInfo newAlbumInfo = new NewAlbumInfo();
+                newAlbumInfo.artist = artist.Key;
+                newAlbumInfo.albums = newAlbums;
+                allNewAlbums.Add(newAlbumInfo);
+
+            }
+
+            EmailHelper.EmailNewAlbumInfo(allNewAlbums);
+
+        }
+
+        public class NewAlbumInfo
+        {
+            public string artist;
+            public IEnumerable<Album> albums;
 
         }
 
