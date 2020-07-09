@@ -6,7 +6,7 @@ namespace SpotifyNewMusic.Entities
 {
     public class EmailSettings
     {
-        public string host, emailAddress, recipients;
+        public string host, emailAddress, password, recipients;
         public int port;
     }
 }
