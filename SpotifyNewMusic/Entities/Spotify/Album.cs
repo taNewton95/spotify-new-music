@@ -13,6 +13,7 @@ namespace SpotifyNewMusic.Entities.Spotify
         public string uri;
         public DateTime release_date;
         public Image[] images;
+        public Dictionary<string, string> external_urls;
 
     }
 }

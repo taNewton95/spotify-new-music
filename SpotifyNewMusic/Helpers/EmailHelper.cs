@@ -19,7 +19,7 @@ namespace SpotifyNewMusic.Helpers
                             <img alt=""Album Icon"" class=""Album-Icon""
                                 src=""@ImageSource"">
 
-                            <label class=""Album-Title"">@AlbumTitle</label>
+                            <label href=""@AlbumLink"" class=""Album-Title"">@AlbumTitle</label>
                             <div class=""Artist-Title"">
                                 <label>@ArtistSummary</label>
                             </div>
@@ -40,9 +40,14 @@ namespace SpotifyNewMusic.Helpers
             {
                 foreach (Album album in artist.albums)
                 {
+                    if (!string.IsNullOrEmpty(album.album_group) & album.album_group.Equals("appears_on"))
+                    {
+                        continue;
+                    }
+
                     var _AlbumBuilder = new StringBuilder(_AlbumCard);
 
-                    _AlbumBuilder.Replace("@AlbumLink", album.uri);
+                    _AlbumBuilder.Replace("@AlbumLink", album.external_urls.GetValueOrDefault("spotify", ""));
                     _AlbumBuilder.Replace("@ImageSource", album.images[0].url);
                     _AlbumBuilder.Replace("@AlbumTitle", album.name);
                     _AlbumBuilder.Replace("@ArtistSummary", album.album_type.Substring(0,1).ToUpper() + album.album_type.Substring(1) + " by " + artist.artist);
