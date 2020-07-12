@@ -73,7 +73,6 @@ namespace SpotifyNewMusic.Properties {
         ///        html {
         ///            font-family: Arial, Helvetica, sans-serif;
         ///            height: 100%;
-        ///            background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(29, 185, 84, 1) 100%);
         ///        }
         ///
         ///        .Album-Icon {
@@ -85,7 +84,10 @@ namespace SpotifyNewMusic.Properties {
         ///        }
         ///
         ///        .Card {
-        ///   [rest of string was truncated]&quot;;.
+        ///            transition: 0.3s;
+        ///            display: block;
+        ///            text-decoration: none;
+        ///           [rest of string was truncated]&quot;;.
         /// </summary>
         public static string EmailTemplate {
             get {
