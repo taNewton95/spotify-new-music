@@ -37,7 +37,7 @@ namespace SpotifyNewMusic
             {
                 GetAlbumsResponse response = await APIHelper.GetAlbums(artist.Value);
 
-                var newAlbums = response.items.Where(album => album.release_date.CompareTo(DateTime.Now.Date.AddHours(-4)) > 0);
+                var newAlbums = response.items.Where(album => album.release_date.CompareTo(DateTime.Now.Date.AddHours(-12)) > 0);
 
                 if (newAlbums.Count() == 0)
                 {
